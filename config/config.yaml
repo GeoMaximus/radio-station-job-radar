@@ -1,0 +1,42 @@
+database: data/jobs.db
+
+# Only Bucharest / Ilfov (matched without diacritics, case-insensitive).
+locations: [bucuresti, bucharest, ilfov]
+
+# Full-time only. Unknown job type is accepted; explicit non-full-time is rejected.
+job_type:
+  accept: [full time, full-time, norma intreaga, program complet]
+  exclude: [part time, part-time, norma partiala, intern, internship, stagiu, freelance, colaborare, voluntar]
+
+# A job is notified only if its title/department contains one of these keywords.
+# Leave `interests: {}` to be notified about every Bucharest/Ilfov full-time job.
+interests:
+  Software Development: [developer, dezvoltator, programator, software, engineer, inginer software, backend, frontend, fullstack, full-stack, devops, qa, tester, java, python]
+  # Radio, Media: [producator, reporter, redactor, realizator, editor, jurnalist, dj]
+  # Marketing: [marketing, social media, content, community manager]
+
+# Shown as "Tehnologii" when found in the title/description.
+technologies: [Java, Kotlin, Python, JavaScript, TypeScript, React, Angular, Vue, Node.js, Spring Boot, .NET, C#, C++, PHP, Laravel, Go, SQL, PostgreSQL, MySQL, Docker, Kubernetes, AWS, Azure, Android, iOS]
+
+# --- Sources -----------------------------------------------------------------
+# url / selectors below are PLACEHOLDERS: open each careers page, inspect the
+# HTML and fill the CSS selectors, then set enabled: true. Check with:
+#   python -m jobradar --dry-run --only <key>
+# Selector syntax: CSS, or "css@attr" to read an attribute (e.g. "a@href").
+# Add `render: playwright` only for pages that load jobs via JavaScript.
+sources:
+  example_radio:
+    enabled: false
+    company: Exemplu Radio
+    url: https://example.ro/cariere
+    default_location: București   # used when the page doesn't list a location
+    # render: playwright
+    selectors:
+      item: ".job-listing"
+      title: ".job-title"
+      link: "a@href"
+      location: ".job-location"
+      department: ".job-department"
+      job_type: ".job-type"
+      date: ".job-date"
+      description: ".job-excerpt"
